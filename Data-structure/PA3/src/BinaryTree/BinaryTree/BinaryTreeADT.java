@@ -1,0 +1,1 @@
+package BinaryTree.BinaryTree;public interface BinaryTreeADT<T> {   public void deleteLeftSubtree();   public void deleteRightSubtree();	      public void deleteAllElements();   public boolean isEmpty();   public int size();   public boolean contains (T targetElement);   public T find (T targetElement);}  

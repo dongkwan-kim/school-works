@@ -1,0 +1,194 @@
+Created by PLY version 3.8 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> expression
+Rule 1     expression -> ALPHA
+Rule 2     expression -> LPAREN expression RPAREN
+Rule 3     expression -> expression ALTER expression
+Rule 4     expression -> expression expression
+Rule 5     expression -> expression STAR
+
+Terminals, with rules where they appear
+
+ALPHA                : 1
+ALTER                : 3
+LPAREN               : 2
+RPAREN               : 2
+STAR                 : 5
+error                : 
+
+Nonterminals, with rules where they appear
+
+expression           : 2 3 3 4 4 5 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . expression
+    (1) expression -> . ALPHA
+    (2) expression -> . LPAREN expression RPAREN
+    (3) expression -> . expression ALTER expression
+    (4) expression -> . expression expression
+    (5) expression -> . expression STAR
+
+    ALPHA           shift and go to state 2
+    LPAREN          shift and go to state 1
+
+    expression                     shift and go to state 3
+
+state 1
+
+    (2) expression -> LPAREN . expression RPAREN
+    (1) expression -> . ALPHA
+    (2) expression -> . LPAREN expression RPAREN
+    (3) expression -> . expression ALTER expression
+    (4) expression -> . expression expression
+    (5) expression -> . expression STAR
+
+    ALPHA           shift and go to state 2
+    LPAREN          shift and go to state 1
+
+    expression                     shift and go to state 4
+
+state 2
+
+    (1) expression -> ALPHA .
+
+    ALTER           reduce using rule 1 (expression -> ALPHA .)
+    STAR            reduce using rule 1 (expression -> ALPHA .)
+    ALPHA           reduce using rule 1 (expression -> ALPHA .)
+    LPAREN          reduce using rule 1 (expression -> ALPHA .)
+    $end            reduce using rule 1 (expression -> ALPHA .)
+    RPAREN          reduce using rule 1 (expression -> ALPHA .)
+
+
+state 3
+
+    (0) S' -> expression .
+    (3) expression -> expression . ALTER expression
+    (4) expression -> expression . expression
+    (5) expression -> expression . STAR
+    (1) expression -> . ALPHA
+    (2) expression -> . LPAREN expression RPAREN
+    (3) expression -> . expression ALTER expression
+    (4) expression -> . expression expression
+    (5) expression -> . expression STAR
+
+    ALTER           shift and go to state 5
+    STAR            shift and go to state 6
+    ALPHA           shift and go to state 2
+    LPAREN          shift and go to state 1
+
+    expression                     shift and go to state 7
+
+state 4
+
+    (2) expression -> LPAREN expression . RPAREN
+    (3) expression -> expression . ALTER expression
+    (4) expression -> expression . expression
+    (5) expression -> expression . STAR
+    (1) expression -> . ALPHA
+    (2) expression -> . LPAREN expression RPAREN
+    (3) expression -> . expression ALTER expression
+    (4) expression -> . expression expression
+    (5) expression -> . expression STAR
+
+    RPAREN          shift and go to state 8
+    ALTER           shift and go to state 5
+    STAR            shift and go to state 6
+    ALPHA           shift and go to state 2
+    LPAREN          shift and go to state 1
+
+    expression                     shift and go to state 7
+
+state 5
+
+    (3) expression -> expression ALTER . expression
+    (1) expression -> . ALPHA
+    (2) expression -> . LPAREN expression RPAREN
+    (3) expression -> . expression ALTER expression
+    (4) expression -> . expression expression
+    (5) expression -> . expression STAR
+
+    ALPHA           shift and go to state 2
+    LPAREN          shift and go to state 1
+
+    expression                     shift and go to state 9
+
+state 6
+
+    (5) expression -> expression STAR .
+
+    ALTER           reduce using rule 5 (expression -> expression STAR .)
+    STAR            reduce using rule 5 (expression -> expression STAR .)
+    ALPHA           reduce using rule 5 (expression -> expression STAR .)
+    LPAREN          reduce using rule 5 (expression -> expression STAR .)
+    $end            reduce using rule 5 (expression -> expression STAR .)
+    RPAREN          reduce using rule 5 (expression -> expression STAR .)
+
+
+state 7
+
+    (4) expression -> expression expression .
+    (3) expression -> expression . ALTER expression
+    (4) expression -> expression . expression
+    (5) expression -> expression . STAR
+    (1) expression -> . ALPHA
+    (2) expression -> . LPAREN expression RPAREN
+    (3) expression -> . expression ALTER expression
+    (4) expression -> . expression expression
+    (5) expression -> . expression STAR
+
+    ALTER           reduce using rule 4 (expression -> expression expression .)
+    ALPHA           reduce using rule 4 (expression -> expression expression .)
+    LPAREN          reduce using rule 4 (expression -> expression expression .)
+    $end            reduce using rule 4 (expression -> expression expression .)
+    RPAREN          reduce using rule 4 (expression -> expression expression .)
+    STAR            shift and go to state 6
+
+  ! STAR            [ reduce using rule 4 (expression -> expression expression .) ]
+  ! ALTER           [ shift and go to state 5 ]
+  ! ALPHA           [ shift and go to state 2 ]
+  ! LPAREN          [ shift and go to state 1 ]
+
+    expression                     shift and go to state 7
+
+state 8
+
+    (2) expression -> LPAREN expression RPAREN .
+
+    ALTER           reduce using rule 2 (expression -> LPAREN expression RPAREN .)
+    STAR            reduce using rule 2 (expression -> LPAREN expression RPAREN .)
+    ALPHA           reduce using rule 2 (expression -> LPAREN expression RPAREN .)
+    LPAREN          reduce using rule 2 (expression -> LPAREN expression RPAREN .)
+    $end            reduce using rule 2 (expression -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 2 (expression -> LPAREN expression RPAREN .)
+
+
+state 9
+
+    (3) expression -> expression ALTER expression .
+    (3) expression -> expression . ALTER expression
+    (4) expression -> expression . expression
+    (5) expression -> expression . STAR
+    (1) expression -> . ALPHA
+    (2) expression -> . LPAREN expression RPAREN
+    (3) expression -> . expression ALTER expression
+    (4) expression -> . expression expression
+    (5) expression -> . expression STAR
+
+    ALTER           reduce using rule 3 (expression -> expression ALTER expression .)
+    LPAREN          reduce using rule 3 (expression -> expression ALTER expression .)
+    $end            reduce using rule 3 (expression -> expression ALTER expression .)
+    RPAREN          reduce using rule 3 (expression -> expression ALTER expression .)
+    STAR            shift and go to state 6
+    ALPHA           shift and go to state 2
+
+  ! STAR            [ reduce using rule 3 (expression -> expression ALTER expression .) ]
+  ! ALPHA           [ reduce using rule 3 (expression -> expression ALTER expression .) ]
+  ! ALTER           [ shift and go to state 5 ]
+  ! LPAREN          [ shift and go to state 1 ]
+
+    expression                     shift and go to state 7

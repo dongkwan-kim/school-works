@@ -1,0 +1,5 @@
+<state> 1or2or4or5or7, 2or3or5or7, 0or6, empty
+<alphabet> a, b
+<t_func> 0or6 | a -> 1or2or4or5or7, 0or6 | b -> empty, 1or2or4or5or7 | a -> empty, 1or2or4or5or7 | b -> 2or3or5or7, empty | a -> empty, empty | b -> empty, 2or3or5or7 | a -> empty, 2or3or5or7 | b -> 2or3or5or7
+<init_state> 0or6
+<final_state> 1or2or4or5or7, 2or3or5or7

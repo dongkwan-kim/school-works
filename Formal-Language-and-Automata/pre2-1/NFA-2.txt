@@ -1,0 +1,5 @@
+<state> 1, 2, 3, 4, 5
+<alphabet> a, b
+<t_func> 1 | * -> 2, 1 | a -> 3, 2 | a -> 5, 2 | a -> 4, 3 | b -> 4, 4 | a -> 5, 4 | b -> 5
+<init_state> 1
+<final_state> 5

@@ -1,0 +1,122 @@
+rbp = rsp + 0x30
+||
+%d %d %d %d %d %d
+
+0x0000000000400f4e <phase_6+30>:        sub    $0x1,%eax
+0x0000000000400f51 <phase_6+33>:        cmp    $0x5,%eax
+0x0000000000400f54 <phase_6+36>:        jbe    0x400f5b <phase_6+43>
+0x0000000000400f56 <phase_6+38>:        callq  0x4013ca <explode_bomb>
+>>> (%d-1)는 5보다 작거나 같다. -> %d는 6보다 작거나 같다.
+>>> & 0보다 크다.(jbe->unsign)
+
+0x0000000000400f6b <phase_6+59>:        mov    0x0(%rbp),%edx
+0x0000000000400f6e <phase_6+62>:        cmp    0x30(%rsp,%rax,4),%edx
+0x0000000000400f72 <phase_6+66>:        jne    0x400f79 <phase_6+73>
+0x0000000000400f74 <phase_6+68>:        callq  0x4013ca <explode_bomb>
+>>> 모든 %d는 다 다른 값이다.
+
+-----------------------------------------------0x400f87 <phase_6+87>로 jump
+
+r8(starting)
+||
+%d %d %d %d %d %d
+
+rsi = node
+rcx= %d pointer
+rdx= node storage
+rbp=1 (constant)
+rbx= loop counter(0~6): 실제는 n*4임
+
+<program flow>
+|
+| orange(0x400fb7 <phase_6+135>)
+| >>%d를 차례대로 선택
+|
+0x0000000000400fc2 <phase_6+146>:       cmp    $0x1,%ecx
+0x0000000000400fc5 <phase_6+149>:       jg     0x400fa0 <phase_6+112>
+0x0000000000400fc7 <phase_6+151>:       jmp    0x400fab <phase_6+123>
+|
+| -> jg     0x400fa0 <phase_6+112> = %d가 1보다 크면(첫 번째 index가 아니면)
+|    green(0x400fa0 <phase_6+112>): %d와 rax가 같을 때까지 Node 이동
+|    pink(0x400fab <phase_6+123>): sp(=rdi) 위(=rdi+2*rbx)에 Node를 저장
+| -> jmp    0x400fab <phase_6+123> = %d가 1이랑 같으면(첫 번째 index면)
+|    pink(0x400fab <phase_6+123>): sp(=rdi) 위(=rdi+2*rbx)에 Node를 저장
+
+<instruction 설명>
+__________________________________________
+orange(0x400fb7 <phase_6+135>)
+...
+0x0000000000400f9e <phase_6+110>:       jmp    0x400fb9 <phase_6+137>
+...
+0x0000000000400fb9 <phase_6+137>:       mov    (%r8,%rbx,1),%ecx
+0x0000000000400fbd <phase_6+141>:       mov    %ebp,%eax
+0x0000000000400fbf <phase_6+143>:       mov    %rsi,%rdx
+
+mov    (%r8,%rbx,1),%ecx
+= rcx(%d pointer) = r8(첫번째 %d pointer) + rbx(loop counter = index로 작용)
+-> %d를 차례대로 선택
+__________________________________________
+green(0x400fa0 <phase_6+112>)
+0x0000000000400fa0 <phase_6+112>:       mov    0x8(%rdx),%rdx
+0x0000000000400fa4 <phase_6+116>:       add    $0x1,%eax
+0x0000000000400fa7 <phase_6+119>:       cmp    %ecx,%eax
+0x0000000000400fa9 <phase_6+121>:       jne    0x400fa0 <phase_6+112>
+
+mov    0x8(%rdx),%rdx
+>> 다음 노드 선택
+
+add    $0x1,%eax
+cmp    %ecx,%eax 
+jne    0x400fa0 <phase_6+112>
+>> pointe(ecx)와 rax가 같은 값을 가질 때까지 loop
+>> index 증가
+__________________________________________
+pink(0x400fab <phase_6+123>)
+0x0000000000400fab <phase_6+123>:       mov    %rdx,(%rdi,%rbx,2)
+0x0000000000400faf <phase_6+127>:       add    $0x4,%rbx
+0x0000000000400fb3 <phase_6+131>:       cmp    $0x18,%rbx
+0x0000000000400fb7 <phase_6+135>:       je     0x400fc9 <phase_6+153>
+
+mov    %rdx,(%rdi,%rbx,2)
+>> rdi(sp)+2(node크기)*rbx(loop counter=index) = rdx(pointer가 가리키는 node)
+>> sp(=rdi) 위(=rdi+2*rbx)에 Node를 저장
+
+add    $0x4,%rbx
+>> loop counter 증가
+
+cmp    $0x18,%rbx
+je     0x400fc9 <phase_6+153>
+>> rbx(loop counter)가 0x18=24=4*6이어야 jump함
+>> %d를 넣은 만큼 6번 돌아야 함
+__________________________________________
+결과: sp 위에 2byte간격으로 Node<%d>가 쌓임.
+Node의 크기가 2byte
+
+----------------------------------------------0x400fc9 <phase_6+153>로 jump
+
+node1: 553
+node2: 78
+node3: 661
+node4: 195
+node5: 145
+node6: 834
+
+0x0000000000401007 <phase_6+215>까지 일련의 결과:  rbx = rsp, rax = rsp+8
+
+0x000000000040100b <phase_6+219>:       mov    (%rbx),%edx
+0x000000000040100d <phase_6+221>:       cmp    (%rax),%edx
+0x000000000040100f <phase_6+223>:       jle    0x401016 <phase_6+230>
+0x0000000000401011 <phase_6+225>:       callq  0x4013ca <explode_bomb>
+>>> (rbx=rsp)node에 들어있는 값이 (rax=rsp+8)node에 들어있는 값 보다 작거나 같아야 한다.
+
+0x0000000000401016 <phase_6+230>:       mov    0x8(%rbx),%rbx
+0x000000000040101a <phase_6+234>:       add    $0x1,%ebp
+0x000000000040101d <phase_6+237>:       cmp    $0x5,%ebp
+0x0000000000401020 <phase_6+240>:       jne    0x401007 <phase_6+215>
+>>> 노드배열에서 다음 인덱스(rbx=rsp+8), ebp(loop counter)가 5가 되어야, 즉 전체 노드배열을 다 훑어야 종료.
+
+>>> 결과: Node 값에 대한 오름차순으로 정렬.
+n2 -> n5  -> n4  -> n1  -> n3  -> n6
+78 -> 145 -> 195 -> 553 -> 661 -> 834
+
+2 5 4 1 3 6

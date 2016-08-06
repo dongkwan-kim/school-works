@@ -1,0 +1,19 @@
+############################
+
+Welcome to Automata project2
+
+############################
+
+You can only use for RegExp
+
+*: closure
++: union(alternation)
+(, ): parenthesis
+?: epsilon
+and alphanumeric values
+
+############################
+
+alphabet must be one letter
+
+############################
