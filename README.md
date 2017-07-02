@@ -12,3 +12,4 @@
 - System Programming (CS230): 2015 Fall
 - Introduction to Database (cs360): 2016 Fall
 - Introduction to Computer Networks (cs341): 2016 Fall
+- Introduction to Open Source Software (cs494): 2017 Spring
