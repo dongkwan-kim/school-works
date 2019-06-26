@@ -14,3 +14,4 @@
 - Introduction to Computer Networks (CS341): 2016 Fall
 - Introduction to Open Source Software (CS494): 2017 Spring
 - Deep Learning (CS492): 2018 Spring
+- Computer Vision (CS576): 2019 Spring
